@@ -71,8 +71,11 @@ volumes:
 
 ```
 This is a pretty normal docker-compose file. The relevant parts are the following:
-    - just for sake of avoiding troubles with permission, I required to run the image under root user. This is generally a bad idea;  it's much more safer to create a specific user - with limited privileges - and adding it to docker group (so that it can connect to underlying docker daemon;
-    - I assigned a container name to the image to be run;
-    - via ```volumes:``` block I mapped host folders to the corrispondent container folders; I want Jenkins plugins, configurations and so on to be persistent after subsequent modifications to the container.
+- just for sake of avoiding troubles with permission, I required to run the image under root user. 
+  This is generally a bad idea;  it's much more safer to create a specific user - with limited privileges - 
+  and adding it to docker group (so that it can connect to underlying docker daemon;
+- I assigned a container name to the image to be run;
+- via ```volumes:``` block I mapped host folders to the corrispondent container folders; I want Jenkins plugins,
+  configurations and so on to be persistent after subsequent modifications to the container.
 
 

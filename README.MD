@@ -42,7 +42,7 @@ RUN apt-get install docker-ce-cli=5:18.09.0~3-0~debian-stretch  containerd.io  -
 To build the actual image, just run the following command:
 
 ```
-docker build . --tag custom-jenkins
+docker build  --tag custom-jenkins .
 ```
 
 ### Step 2. Prepare to run customized jenkins image via docker-compose

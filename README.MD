@@ -96,4 +96,8 @@ and at the shell prompt , we need to verify that ```docker -v``` is executed wit
 
 ## Setting up Jenkins to use Maven and a specific JDK.
 
+By default, at the time of writing this document Jenkins docker image is shipped with JDK 8.0. What if we want to use a more recent Java version ? Luckily, it's pretty easy to setup a specific JDK in Jenkins - indeed, you can use a number of different JDKs to build up your projects. Let's see how to install a JDK and how to use it in a pipeline.
 
+### Installing maven.
+
+Installing Maven it's quite simple.

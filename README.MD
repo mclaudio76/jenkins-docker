@@ -82,3 +82,14 @@ This is a pretty normal docker-compose file. The relevant parts are the followin
   is needed to allow the docker client (inside jenkins) to connecto to the running docker daemon on the host machine.
   Otherwise, we couldn't write pipelines able to build docker images inside Jenkins.
 
+So, let's start the container by issuing:
+
+```
+docker-compose up -d # -d runs the container in daemon mode.
+```
+To verify that Jenkins will be able to connect to docker daemon, let's log into the container by issuing:
+
+```
+docker exec -it custjenkins  /bin/bash
+```
+and at the shell prompt , we need to verify that ```docker -v``` is executed without errors.

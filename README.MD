@@ -57,7 +57,7 @@ services:
   jenkins:
     user: root
     image: 'custom-jenkins'
-    container_name: jenkins
+    container_name: custjenkins
     restart: always
     ports:
       - '7080:8080'

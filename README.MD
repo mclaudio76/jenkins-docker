@@ -77,5 +77,8 @@ This is a pretty normal docker-compose file. The relevant parts are the followin
 - I assigned a container name to the image to be run;
 - via ```volumes:``` block I mapped host folders to the corrispondent container folders; I want Jenkins plugins,
   configurations and so on to be persistent after subsequent modifications to the container.
-
+- very important: the line 
+  ```/var/run/docker.sock:/var/run/docker.sock```
+  is needed to allow the docker client (inside jenkins) to connecto to the running docker daemon on the host machine.
+  Otherwise, we couldn't write pipelines able to build docker images inside Jenkins.
 

@@ -1,28 +1,28 @@
 node {
    def mvnHome
-   stage('Preparation') { // for display purposes
-      // Get some code from a GitHub repository
-      git 'https://github.com/mclaudio76/dockerized.git'
-      // Get the Maven tool.
-      // ** NOTE: This 'M3' Maven tool must be configured
-      // **       in the global configuration.           
-      mvnHome = tool 'M3'
+   def jdk
+   stage('Setup Environment') {
+      mvnHome = tool 'Maven3.6.2'
+      jdk     = tool 'AWS'
    }
-   stage('Build') {
-      // Run the maven build
-      withEnv(["MVN_HOME=$mvnHome"]) {
+   stage('Get Source') { // for display purposes
+      git 'https://github.com/mclaudio76/dockerized.git'
+   }
+   stage('Build Java') {
+      
+      withEnv(["JAVA_HOME=$jdk/amazon-corretto-11.0.4.11.1-linux-x64", "PATH=${env.JAVA_HOME}/bin:${env.PATH}:$mvnHome/bin"]) {
          if (isUnix()) {
-            sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore clean package'
+            sh 'mvn -Dmaven.test.failure.ignore clean package'
          } else {
             bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
          }
       }
    }
    
-   stage('Build image') {
+   stage('Build docker image') {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
         app = docker.build("spring-automatic")
     }
 
-   
+}

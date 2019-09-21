@@ -93,3 +93,7 @@ To verify that Jenkins will be able to connect to docker daemon, let's log into 
 docker exec -it custjenkins  /bin/bash
 ```
 and at the shell prompt , we need to verify that ```docker -v``` is executed without errors.
+
+## Setting up Jenkins to use Maven and a specific JDK.
+
+

@@ -46,6 +46,31 @@ To build the actual image, just run the following command:
 docker build . --tag custom-jenkins
 ```
 
-  
+### Step 2. Prepare to run customized jenkins image via docker-compose
+
+Next step is about setting up a docker-compose.yml file to start new built container. I prefer to user docker compose instead of passing command-line parameters whenever i want to start the container.
+Here following docker-compose.yml file:
+
+```
+version: '2'
+services:
+  jenkins:
+    user: root
+    image: 'jenkins/jenkins:lts'
+    container_name: jenkins
+    restart: always
+    ports:
+      - '7080:8080'
+      - '8443:8443'
+      - '50000:50000'
+    volumes:
+      - /opt/docker/volumes/jenkins/home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock  
+volumes:
+  jenkins_data:
+    driver: local
+```
+
+
 
 

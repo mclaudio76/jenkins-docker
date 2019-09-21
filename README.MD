@@ -38,7 +38,6 @@ RUN add-apt-repository \
    stable"
 RUN apt-get update  -qq
 RUN apt-get install docker-ce-cli=5:18.09.0~3-0~debian-stretch  containerd.io  -y
-RUN usermod -aG docker jenkins
 ```
 To build the actual image, just run the following command:
 

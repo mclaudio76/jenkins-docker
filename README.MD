@@ -56,7 +56,7 @@ version: '2'
 services:
   jenkins:
     user: root
-    image: 'jenkins/jenkins:lts'
+    image: 'custom-jenkins'
     container_name: jenkins
     restart: always
     ports:

@@ -22,9 +22,25 @@ In this tutorial:
 Since we need to build docker images directly in Jenkins - which is in turn deployed as a docker container in the docker host - I realized after several attempts that the simplest way to achieve this is to install docker-client inside Jenkins image. As far as I understood, Jenkins images is a Debian distro provided with OpenJDK 1.8; so , we can install on it a docker client taking care that the release of the docker client we're going to install is compatible with the underlying docker daemon on the host machine.
 Also, after having built the docker image, we'll use a compose file to map  Jenkins folders to a persistent volume on the docker host, so that installed plugins, configurations and so on we'll be preserved after container restart. 
 
-`### Step 1. Build docker image
+### Step 1. Build docker image
 
-It's enough to use the following Dockerfile:
+Custom Jenkins docker imager we want to build will use official Jenkins image from Docker Hub. We need to add to the base image the DockerCLI package (and related dependencies). Base image is debian-based, so we can simply use apt-get to install required packages. Here following the Dockerfile I used:
+
+```
+FROM jenkins/jenkins:lts
+USER root
+RUN apt-get update -qq \
+    && apt-get install -qqy apt-transport-https ca-certificates curl gnupg2 software-properties-common
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+RUN add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/debian \
+   $(lsb_release -cs) \
+   stable"
+RUN apt-get update  -qq
+RUN apt-get install docker-ce-cli=5:18.09.0~3-0~debian-stretch  containerd.io  -y
+RUN usermod -aG docker jenkins
+
+```
 
   
 

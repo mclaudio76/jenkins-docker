@@ -13,9 +13,19 @@ In this tutorial:
 - we'll configure Jenkins to download and install latest stable version of Maven;
 - we'll configure Jenkins to download and install a recent JDK release, to be used to build the project;
 - we'll write a simple Jenkins pipeline to 
-    - grab Spring boot project' code from GitHub
-    - compile it via maven
-    - build a docker image of the Spring boot project
+    - grab Spring boot project' code from GitHub;
+    - compile it via Maven;
+    - build a docker image of the Spring boot project (without publishing to Docker Hub repo)
+
+## Building custom Jenkins docker image.
+
+Since we need to build docker images directly in Jenkins - which is in turn deployed as a docker container in the docker host - I realized after several attempts that the simplest way to achieve this is to install docker-client inside Jenkins image. As far as I understood, Jenkins images is a Debian distro provided with OpenJDK 1.8; so , we can install on it a docker client taking care that the release of the docker client we're going to install is compatible with the underlying docker daemon on the host machine.
+Also, after having built the docker image, we'll use a compose file to map  Jenkins folders to a persistent volume on the docker host, so that installed plugins, configurations and so on we'll be preserved after container restart. 
+
+`### Step 1. Build docker image
+
+It's enough to use the following Dockerfile:
+
   
 
 

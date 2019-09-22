@@ -5,7 +5,7 @@ This tutorial shows how to use Jenkins, deployed as docker container on a docker
 This tutorial is far to be optimal, please consider it just as a bunch of notes written by a docker and jenkins novice; anyway, it contains some useful hints to get the work done.
 
 ## What is needed (and what you're going to install)
-To complete this tutorial, you need to have a recent release of docker installed on your pc / workstation. Personally I tested the steps described here on a Ubuntu 18.04 distro, with docker 18.9 installed; when I'll have enough spare-time, I'll try to replicate the same steps another host S.O.
+To complete this tutorial, you need to have a recent release of docker installed on your pc / workstation. Personally I tested the steps described here on a Ubuntu 18.04 distro, with docker 18.9 installed; when I'll have enough spare-time, I'll try to replicate the same steps on another host S.O.
 
 In this tutorial:
 - we are going to build a custom docker image of Jenkins, and provide it with necessary tools to build a docker image after the main build stage (i.e, building the Spring Boot application);

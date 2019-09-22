@@ -141,7 +141,10 @@ So, I created different 'stages' for the pipeline (a single stage would have bee
         -  the JDK to use (via JAVA_HOME).
         -  the whole PATH, taking care to put JAVA_HOME before any other path (otherwise, Maven will pick up the first one that 
            encounters)
-    
+    The nasty thing I've done here is that I needed - sorry, no other way until now found - to specify that JAVA_HOME is given by
+    the path of JDK13 (automatically resolved via ```tool``` instruction) plus the folder ```jdk-13+33``` that's really specific 
+    for the actual JDK. If I wanted to change the JDK implementation - for example, using Amazon Corretto JDK - I would needed to 
+    change not only the symbolic jdk tool path, but also the JAVA_HOME manually.
 
 ```
 node {
@@ -172,6 +175,9 @@ node {
 }
 
 ```
+## Conclusions.
+
+The notes presented here show how to setup jenkins, using a specifing JDK, and how to write a simple pipeline to build a Java project ad dockerize it. Of course this is NOT suited for production-ready continuos delivery scenarios.
 
 
 

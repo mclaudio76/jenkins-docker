@@ -109,18 +109,69 @@ The very first time a pipeline required Maven will be run, Jenkins will download
 
 Installing a JDK is slighty tricky, at least for a novice like me. Let's find JDK section in Global Tool Configuration page and let's tell Jenkins we want to add a new JDK. We have to check "Install automatically" option and provide a few information:
 ![Image of JDK setup](https://github.com/mclaudio76/jenkins-docker/blob/master/jdksetup.png)
-I've made some mess here during my experiments. The most important thing I've leart is that you should only specify 'Name' attribute and the URL to download JDK from, leaving 'Subdirectory of extracted archive' and 'Label' inputs blank.
+I've made some mess while setting up JDK during my experiments. The most important thing I've leart is that you should only specify 'Name' attribute and the URL to download JDK from, leaving 'Subdirectory of extracted archive' and 'Label' inputs blank.
 
 ### Where do downloaded tools go ?
 Short answer: it depends on the tool. For example, JDK is installed in the following folder (within the container):
 ```/var/jenkins_home/tools/hudson.model.JDK/<JDK-NAME>```
 So, in this case, we'll get our OpenJDK 13 installed within ```/var/jenkins_home/tools/hudson.model.JDK/JDK13``` folder. 
 
-Similarly, Jenkins will store Maven packages under ```/var/jenkins_home/tools# cd hudson.tasks.Maven_MavenInstallation/``` folder.
+Similarly, Jenkins will store Maven packages under ```/var/jenkins_home/tools/hudson.tasks.Maven_MavenInstallation/``` folder.
 I presume that different runtimes / tools (i.e, Node) will be extracted elsewhere.
 
 I found useful to know that for configuring the pipeline used to build and dockerize the Spring project.
 
+## Running a simple pipeline.
+
+Here is the pipeline I used to buid my simple project, let's discuss some relevant stuff.
+The pipeline itself it's really simple, and I'm sure that any expert Jenkins user will easily find a better way to accomplish the whole stuff. Anyway, in the 'learn by doing' approach, I think it's better to explore as much as one can.
+So, I created different 'stages' for the pipeline (a single stage would have been enough, tough).
+
+-   The 'Setup Enviroment' stage defines via ```tool``` directive the path where Jenkins will find named tools. In this case, we 
+    need JDK13 and Maven path.
+    
+-   The  'Get Source' stage uses git (which is provided out of the box within Jenkins installation) to grab all source code from 
+    a very simple Spring Boot project I've published on GitHub. The only relevant thing to note here is that project git folder    
+    must contain a valid Dockerfile that Jenkins will use in the last stage to build a container.
+    
+-   The 'Build Java code' section is the tricky part. I had hard times figuring out how to let Maven know which Java runtime to 
+    use, because by default Maven runs with the very first java env it encounters in the PATH, and this is definitely not what
+    we want. After reading on web here and there, I found a working (and very likely perfectible) solution.
+    The ```withEnv``` statement is used to invoke, via shell, Maven after having set:
+        -  the JDK to use (via JAVA_HOME).
+        -  the whole PATH, taking care to put JAVA_HOME before any other path (otherwise, Maven will pick up the first one that 
+           encounters)
+    
+
+```
+node {
+   def mvnHome
+   def jdk
+   stage('Setup Environment') {
+      mvnHome = tool 'M3'
+      jdk     = tool 'JDK13'
+   }
+   stage('Get Source') { // for display purposes
+      git 'https://github.com/mclaudio76/dockerized.git'
+   }
+   stage('Build Java') {
+      
+      withEnv(["JAVA_HOME=$jdk/jdk-13+33", "PATH=${env.JAVA_HOME}/bin:${env.PATH}:$mvnHome/bin"]) {
+         if (isUnix()) {
+            sh 'mvn -Dmaven.test.failure.ignore clean package'
+         } else {
+            bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
+         }
+      }
+   }
+   stage('Build docker image') {
+        /* This builds the actual image; synonymous to
+         * docker build on the command line */
+        app = docker.build("spring-automatic")
+    }
+}
+
+```
 
 
 

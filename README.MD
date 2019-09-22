@@ -100,6 +100,16 @@ By default, at the time of writing this document Jenkins docker image is shipped
 
 ### Installing maven.
 
-Installing Maven it's quite simple. Go to Global Configuration Section in Jenkins console and find Maven setup.
+Installing Maven it's quite simple. Go to Global Tool Configuration Section in Jenkins console and find Maven setup section.
 It's enough to provide a symbolic name for Maven installation and tell Jenkins which Maven version  to download from Apache's website.
 ![Image of Jenkins Maven Section](https://github.com/mclaudio76/jenkins-docker/blob/master/mavensetup.png)
+The very first time a pipeline required Maven will be run, Jenkins will download Maven and will run it. We can also have multiple installations of Maven, but for this simple tutorial a recent Maven installation will suffice.
+
+### Installing JDK.
+
+Installing a JDK is slighty tricky, at least for a novice like me. Let's find JDK section in Global Tool Configuration page and let's tell Jenkins we want to add a new JDK. We have to check "Install automatically" option and provide a few information:
+![Image of JDK setup](https://github.com/mclaudio76/jenkins-docker/blob/master/jdksetup.png)
+I've made some mess here during my experiments. The most important thing I've leart is that you should only specify 'Name' attribute and the URL to download JDK from, leaving 'Subdirectory of extracted archive' and 'Label' inputs blank.
+
+
+

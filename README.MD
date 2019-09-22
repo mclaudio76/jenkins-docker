@@ -102,3 +102,4 @@ By default, at the time of writing this document Jenkins docker image is shipped
 
 Installing Maven it's quite simple. Go to Global Configuration Section in Jenkins console and find Maven setup.
 It's enough to provide a symbolic name for Maven installation and tell Jenkins which Maven version  to download from Apache's website.
+![Image of Jenkins Maven Section](https://github.com/mclaudio76/jenkins-docker/blob/master/mavensetup.png)

@@ -111,5 +111,19 @@ Installing a JDK is slighty tricky, at least for a novice like me. Let's find JD
 ![Image of JDK setup](https://github.com/mclaudio76/jenkins-docker/blob/master/jdksetup.png)
 I've made some mess here during my experiments. The most important thing I've leart is that you should only specify 'Name' attribute and the URL to download JDK from, leaving 'Subdirectory of extracted archive' and 'Label' inputs blank.
 
+### Where do downloaded tools go ?
+Short answer: it depends on the tool. For example, JDK is installed in the following folder (within the container):
+```/var/jenkins_home/tools/hudson.model.JDK/<JDK-NAME>```
+So, in this case, we'll get our OpenJDK 13 installed within ```/var/jenkins_home/tools/hudson.model.JDK/JDK13``` folder. 
+
+Similarly, Jenkins will store Maven packages under ```/var/jenkins_home/tools# cd hudson.tasks.Maven_MavenInstallation/``` folder.
+I presume that different runtimes / tools (i.e, Node) will be extracted elsewhere.
+
+I found useful to know that for configuring the pipeline used to build and dockerize the Spring project.
+
+
+
+
+
 
 
